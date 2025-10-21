@@ -18,6 +18,7 @@ export default function AddQRDialog() {
   const [open, setOpen] = useState(false);
   const [destinationUrl, setDestinationUrl] = useState("");
   const [customSlug, setCustomSlug] = useState("");
+  const [quantity, setQuantity] = useState(1);
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -45,11 +46,12 @@ export default function AddQRDialog() {
 
     // Mock success for now
     setTimeout(() => {
-      toast.success("QR code created successfully!");
-      console.log("Creating QR for:", { destinationUrl, customSlug });
+      toast.success(`${quantity} QR code${quantity > 1 ? 's' : ''} created successfully!`);
+      console.log("Creating QR for:", { destinationUrl, customSlug, quantity });
       setOpen(false);
       setDestinationUrl("");
       setCustomSlug("");
+      setQuantity(1);
       setLoading(false);
     }, 1000);
   };
@@ -91,6 +93,21 @@ export default function AddQRDialog() {
               />
               <p className="text-xs text-muted-foreground">
                 Leave empty for auto-generated slug
+              </p>
+            </div>
+            <div className="grid gap-2">
+              <Label htmlFor="quantity">Number of QR Codes</Label>
+              <Input
+                id="quantity"
+                type="number"
+                min="1"
+                max="100"
+                placeholder="1"
+                value={quantity}
+                onChange={(e) => setQuantity(parseInt(e.target.value) || 1)}
+              />
+              <p className="text-xs text-muted-foreground">
+                Generate multiple QR codes at once (max 100)
               </p>
             </div>
           </div>
